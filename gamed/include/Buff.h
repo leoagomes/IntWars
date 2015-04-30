@@ -7,12 +7,33 @@
 class Unit;
 class LuaScript;
 
-enum BuffType{
-BUFFTYPE_ETERNAL,
-BUFFTYPE_TEMPORARY
+enum BuffDuration {
+   BUFFTYPE_ETERNAL,
+   BUFFTYPE_TEMPORARY
 };
 
+enum BuffFlag {
+// Generic Properties
+   BUFFFLAG_BUFF,
+   BUFFFLAG_DEBUFF,
 
+// Crowd Control
+   BUFFFLAG_DISABLE,
+   BUFFFLAG_AIRBORNE,
+   BUFFFLAG_BLIND,
+   BUFFFLAG_DISARM,
+   BUFFFLAG_FORCED,
+   BUFFFLAG_ROOT,
+   BUFFFLAG_SILENCE,
+   BUFFFLAG_SLOW,
+   BUFFFLAG_STASIS,
+   BUFFFLAG_STUN,
+   BUFFFLAG_SUSPENSION,
+   BUFFFLAG_SUPPRESION,
+
+// On Death
+   BUFFFLAG_TRANSFER
+};
 
 class Buff{
 protected:
@@ -28,6 +49,10 @@ protected:
    void init();
    std::string name;
 
+   std::vector <StatMod> statMods;
+   std::vector <BuffFlag> flags;
+
+   bool enabled;
 public:
 
    BuffType const getBuffType(){return buffType;}
@@ -35,6 +60,10 @@ public:
       return attachedTo;
    }
    
+   Unit* const getSource () {
+      return attacker;
+   }
+
    void setName(const std::string& name){
       this->name = name;
    }
@@ -47,18 +76,36 @@ public:
    float getMovementSpeedPercentModifier() { return movementSpeedPercentModifier;}
 
    void setMovementSpeedPercentModifier(float modifier){ movementSpeedPercentModifier = modifier; }
+
+   void setEnabled (bool state) {
+      this->enabled = state;
+   }
    
    std::string getName() const {
       return name;
    }
    
    void setTimeElapsed(float time){
-   timeElapsed = time;
+      timeElapsed = time;
    }
-   
 
    void update(int64 diff);
-   
+
+   std::vector <BuffFlag> getBuffFlags () {
+      return this->flags;
+   }
+   void addFlag (BuffFlag flag) {
+      this->flags.push_back (flag);
+   }
+
+   std::vector <StatMod>  getStatMods () {
+      return this->statMods;
+   }
+   void addStatMod (StatMod statMod) {
+      this->statMods.push_back (statMod);
+   }
+
+   void apply (); 
 };
 
 

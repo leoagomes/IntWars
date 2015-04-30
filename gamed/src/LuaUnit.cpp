@@ -75,7 +75,12 @@ void LuaScript::addUnit() {
     sol::userdata <Buff> buffUserData(// this is the actual user data.
             "Buff", buffCtr, //Unit's constructor, not really useful, but necessary.
             "getName", &Buff::getName,
-            "setMovementSpeedPercentModifier", &Buff::setMovementSpeedPercentModifier
+            "setMovementSpeedPercentModifier", &Buff::setMovementSpeedPercentModifier,
+            "setEnabled", &Buff::setEnabled,
+            "addFlag", &Buff::addFlag,
+            "getFlags", &Buff::getFlags,
+            "addStatMod", &Buff::addStatMod,
+            "getStatMods", &Buff::getStatMods
             );//"methodName", &Class::method);
     lua.set_userdata(buffUserData); //Add the userData to lua
     
