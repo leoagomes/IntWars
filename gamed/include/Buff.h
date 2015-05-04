@@ -16,9 +16,9 @@ enum BuffFlag {
 // Generic Properties
    BUFFFLAG_BUFF,
    BUFFFLAG_DEBUFF,
+   BUFFFLAG_DISABLE,
 
 // Crowd Control
-   BUFFFLAG_DISABLE,
    BUFFFLAG_AIRBORNE,
    BUFFFLAG_BLIND,
    BUFFFLAG_DISARM,

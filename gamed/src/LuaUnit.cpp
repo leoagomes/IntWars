@@ -83,16 +83,4 @@ void LuaScript::addUnit() {
             "getStatMods", &Buff::getStatMods
             );//"methodName", &Class::method);
     lua.set_userdata(buffUserData); //Add the userData to lua
-    
-    //Setting lua values:
-    lua.set("DAMAGE_TYPE_PHYSICAL", DAMAGE_TYPE_PHYSICAL);
-    lua.set("DAMAGE_TYPE_MAGICAL", DAMAGE_TYPE_MAGICAL);
-    lua.set("DAMAGE_TYPE_TRUE", DAMAGE_TYPE_TRUE);
-    lua.set("DAMAGE_SOURCE_ATTACK", DAMAGE_SOURCE_ATTACK);
-    lua.set("DAMAGE_SOURCE_SPELL", DAMAGE_SOURCE_SPELL);
-    lua.set("DAMAGE_SOURCE_SUMMONER_SPELL", DAMAGE_SOURCE_SUMMONER_SPELL);
-    lua.set("DAMAGE_SOURCE_PASSIVE", DAMAGE_SOURCE_PASSIVE);
-    lua.set("BUFFTYPE_ETERNAL", BUFFTYPE_ETERNAL);
-    lua.set("BUFFTYPE_TEMPORARY", BUFFTYPE_TEMPORARY);
-
 }
