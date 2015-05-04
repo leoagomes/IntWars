@@ -28,4 +28,4 @@ function applyEffects()
     end
 
     destroyProjectile()
-end
+en

@@ -14,10 +14,11 @@ void Buff::update(int64 diff){
    
    if(buffScript != 0 && buffScript->isLoaded()){
       buffScript->lua.get <sol::function> ("onUpdate").call <void> (diff);
-   }else ;
+   }
 
    if(getBuffType() != BUFFTYPE_ETERNAL){
       if(timeElapsed >= duration){
+         remove ();
       }
    }
 }
@@ -38,6 +39,7 @@ Buff::Buff(std::string buffName, float dur, BuffType type, Unit* u, Unit* uu)  :
             return attachedTo;
          });
          buffScript->lua.set_function("dealMagicDamage", [this](Unit* target, float amount) { attacker->dealDamageTo(target,amount,DAMAGE_TYPE_MAGICAL,DAMAGE_SOURCE_SPELL); });
+         buffScript->lua.set_function("getBuff()" [this]() { return this; });
          CORE_INFO("added lua buff script functions");
       }catch(sol::error e){//lua error? don't crash the whole server
          buffScript->setLoaded(false);
@@ -57,6 +59,12 @@ void Buff::apply () {
    attachedTo->getMap()->getGame()->notifyAddBuff(attachedTo, attacker, name);
 
    enabled = true;
+
+   try{
+      buffScript->lua.get <sol::function> ("onApply").call <void> ();
+   }catch(sol::error e){//lua error? don't crash the whole server
+      CORE_ERROR("Lua buff apply error: %s", e.what());
+   }
 }
 
 void Buff::remove () {
@@ -69,5 +77,13 @@ void Buff::remove () {
    if(name != ""){ // empty name = no buff icon
       attachedTo->getMap()->getGame()->notifyRemoveBuff(attachedTo, name);
    }
+
+   enabled = false;
    remove = true;
+
+   try{
+      buffScript->lua.get <sol::function> ("onRemove").call <void> ();
+   }catch(sol::error e){//lua error? don't crash the whole server
+      CORE_ERROR("Lua buff remove error: %s", e.what());
+   }
 }
